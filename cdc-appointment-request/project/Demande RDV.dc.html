@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; }
+    a { color: #e8447c; }
+    a:hover { color: #c9376a; }
+    button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible {
+      outline: 2px solid #e8447c;
+      outline-offset: 2px;
+    }
+    @keyframes floatA {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      50% { transform: translate(6px, -18px) rotate(8deg); }
+    }
+    @keyframes floatB {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      50% { transform: translate(-10px, -14px) rotate(-10deg); }
+    }
+    @keyframes floatC {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      50% { transform: translate(8px, 16px) rotate(6deg); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .rdv-decor { animation: none !important; }
+    }
+  </style>
+</helmet>
+
+<div style="position:relative; min-height:100vh; width:100%; overflow:hidden; background:linear-gradient(180deg, #ffe1ea 0%, #ffd0de 100%); font-family:'Poppins', sans-serif; color:#3a2530; display:flex; align-items:center; justify-content:center; padding:32px 20px;">
+
+  <span class="rdv-decor" style="position:absolute; top:8%; left:10%; font-size:34px; pointer-events:none; animation:floatA 7s ease-in-out infinite; opacity:0.85;">🌸</span>
+  <span class="rdv-decor" style="position:absolute; top:16%; right:12%; font-size:26px; pointer-events:none; animation:floatB 6s ease-in-out infinite; opacity:0.8;">💗</span>
+  <span class="rdv-decor" style="position:absolute; bottom:14%; left:8%; font-size:30px; pointer-events:none; animation:floatC 8s ease-in-out infinite; opacity:0.75;">✨</span>
+  <span class="rdv-decor" style="position:absolute; bottom:10%; right:9%; font-size:32px; pointer-events:none; animation:floatA 9s ease-in-out infinite; opacity:0.8;">🌷</span>
+  <span class="rdv-decor" style="position:absolute; top:42%; left:4%; font-size:22px; pointer-events:none; animation:floatB 10s ease-in-out infinite; opacity:0.6;">💗</span>
+  <span class="rdv-decor" style="position:absolute; top:38%; right:5%; font-size:20px; pointer-events:none; animation:floatC 7.5s ease-in-out infinite; opacity:0.6;">🌸</span>
+
+  <div style="background:#fffafc; border-radius:26px; box-shadow:0 20px 60px rgba(232,68,124,0.22); max-width:440px; width:100%; padding:44px 32px; position:relative; z-index:2;">
+
+    <sc-if value="{{ isStep1 }}" hint-placeholder-val="{{ true }}">
+      <div style="text-align:center;">
+        <div style="width:64px; height:64px; margin:0 auto 20px; border-radius:50%; background:#f6a8c2; display:flex; align-items:center; justify-content:center; font-size:30px;">🌸</div>
+        <h1 style="font-family:'Cormorant Garamond', serif; font-weight:700; font-size:1.9rem; line-height:1.25; margin:0 0 12px; color:#e8447c;">Tu veux bien sortir avec moi ? 🌸</h1>
+        <p style="font-style:italic; font-size:0.95rem; color:#6b4a58; margin:0 0 32px;">Diane, réfléchis bien avant de répondre... 😏</p>
+        <div style="display:flex; gap:16px; justify-content:center; align-items:center; flex-wrap:wrap; min-height:56px;">
+          <button onClick="{{ goToStep2 }}" style="border:none; border-radius:30px; padding:16px 32px; font-family:'Poppins', sans-serif; font-weight:600; font-size:1rem; background:#e8447c; color:#fffafc; cursor:pointer; transition:transform 0.15s ease; box-shadow:0 8px 20px rgba(232,68,124,0.35);" style-active="transform:scale(0.96);">Oui</button>
+          <sc-if value="{{ nonDisabled }}" hint-placeholder-val="{{ false }}">
+            <button disabled="{{ true }}" aria-label="Ce bouton n'est pas disponible" style="border:none; border-radius:30px; padding:16px 32px; font-family:'Poppins', sans-serif; font-weight:600; font-size:1rem; background:#c98bd0; color:#fffafc; opacity:0.45; cursor:not-allowed;">Non</button>
+          </sc-if>
+          <sc-if value="{{ nonEnabled }}" hint-placeholder-val="{{ false }}">
+            <button
+              onMouseEnter="{{ fleeNon }}"
+              onTouchStart="{{ fleeNon }}"
+              onClick="{{ fleeNon }}"
+              aria-label="Bouton non, il fuit — impossible à cliquer"
+              style="{{ nonButtonStyle }}"
+            >Non</button>
+          </sc-if>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isStep2 }}" hint-placeholder-val="{{ false }}">
+      <div style="text-align:center;">
+        <div style="width:64px; height:64px; margin:0 auto 20px; border-radius:50%; background:#f6a8c2; display:flex; align-items:center; justify-content:center; font-size:30px;">😭</div>
+        <h1 style="font-family:'Cormorant Garamond', serif; font-weight:700; font-size:1.9rem; line-height:1.25; margin:0 0 12px; color:#e8447c;">Attends, tu as vraiment dit oui ?? 😭</h1>
+        <p style="font-style:italic; font-size:0.95rem; color:#6b4a58; margin:0 0 32px;">Diane, on ne reviendra pas en arrière, tu es sûre ?</p>
+        <button onClick="{{ goToStep3 }}" style="border:none; border-radius:30px; padding:16px 36px; font-family:'Poppins', sans-serif; font-weight:600; font-size:1rem; background:#e8447c; color:#fffafc; cursor:pointer; box-shadow:0 8px 20px rgba(232,68,124,0.35);">ok ok →</button>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isStep3 }}" hint-placeholder-val="{{ false }}">
+      <div>
+        <h1 style="font-family:'Cormorant Garamond', serif; font-weight:700; font-size:1.7rem; line-height:1.25; margin:0 0 24px; color:#e8447c; text-align:center;">C'est quand, alors ?</h1>
+
+        <label for="rdv-date" style="display:block; font-weight:500; font-size:0.85rem; margin:0 0 8px; color:#6b4a58;">Choisis un jour</label>
+        <input id="rdv-date" type="date" value="{{ dateValue }}" onChange="{{ onDateChange }}" style="width:100%; padding:14px 16px; border-radius:16px; border:1px solid #f6a8c2; background:#fff; font-family:'Poppins', sans-serif; font-size:1rem; color:#3a2530; margin:0 0 20px;" />
+
+        <label for="rdv-heure" style="display:block; font-weight:500; font-size:0.85rem; margin:0 0 8px; color:#6b4a58;">À quelle heure ?</label>
+        <select id="rdv-heure" value="{{ heureValue }}" onChange="{{ onHeureChange }}" style="width:100%; padding:14px 16px; border-radius:16px; border:1px solid #f6a8c2; background:#fff; font-family:'Poppins', sans-serif; font-size:1rem; color:#3a2530; margin:0 0 28px;">
+          <option value="">— sélectionner —</option>
+          <sc-for list="{{ heureOptions }}" as="opt" hint-placeholder-count="4">
+            <option value="{{ opt }}">{{ opt }}</option>
+          </sc-for>
+        </select>
+
+        <div style="display:flex; gap:12px; justify-content:space-between;">
+          <button onClick="{{ goToStep2 }}" style="border:none; border-radius:30px; padding:14px 22px; font-family:'Poppins', sans-serif; font-weight:500; font-size:0.95rem; background:transparent; color:#6b4a58; cursor:pointer;">← retour</button>
+          <button onClick="{{ goToStep4 }}" style="border:none; border-radius:30px; padding:14px 28px; font-family:'Poppins', sans-serif; font-weight:600; font-size:0.95rem; background:#e8447c; color:#fffafc; cursor:pointer; box-shadow:0 8px 20px rgba(232,68,124,0.3);">suivant →</button>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isStep4 }}" hint-placeholder-val="{{ false }}">
+      <div>
+        <h1 style="font-family:'Cormorant Garamond', serif; font-weight:700; font-size:1.7rem; line-height:1.25; margin:0 0 24px; color:#e8447c; text-align:center;">On a envie de quoi ? 🍽️✨</h1>
+
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(100px, 1fr)); gap:12px; margin:0 0 28px;">
+          <sc-for list="{{ meals }}" as="meal" hint-placeholder-count="6">
+            <button onClick="{{ meal.onSelect }}" style="{{ meal.cardStyle }}">
+              <div style="font-size:26px; margin:0 0 6px;">{{ meal.emoji }}</div>
+              <div style="font-family:'Poppins', sans-serif; font-weight:500; font-size:0.9rem;">{{ meal.name }}</div>
+            </button>
+          </sc-for>
+        </div>
+
+        <div style="display:flex; gap:12px; justify-content:space-between;">
+          <button onClick="{{ goToStep3 }}" style="border:none; border-radius:30px; padding:14px 22px; font-family:'Poppins', sans-serif; font-weight:500; font-size:0.95rem; background:transparent; color:#6b4a58; cursor:pointer;">← retour</button>
+          <button onClick="{{ goToStep5 }}" style="border:none; border-radius:30px; padding:14px 28px; font-family:'Poppins', sans-serif; font-weight:600; font-size:0.95rem; background:#e8447c; color:#fffafc; cursor:pointer; box-shadow:0 8px 20px rgba(232,68,124,0.3);">c'est parti →</button>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isStep5 }}" hint-placeholder-val="{{ false }}">
+      <div style="text-align:center;">
+        <sc-if value="{{ notSent }}" hint-placeholder-val="{{ true }}">
+          <div>
+            <div style="width:64px; height:64px; margin:0 auto 20px; border-radius:50%; background:#f6a8c2; display:flex; align-items:center; justify-content:center; font-size:30px;">💌</div>
+            <h1 style="font-family:'Cormorant Garamond', serif; font-weight:700; font-size:1.8rem; line-height:1.25; margin:0 0 20px; color:#e8447c;">C'est noté, Diane !</h1>
+
+            <div style="background:#ffeef4; border-radius:18px; padding:18px 20px; margin:0 0 24px; text-align:left; font-size:0.92rem; line-height:1.9;">
+              <div>📅 <strong>{{ recapDate }}</strong></div>
+              <div>🕐 <strong>{{ recapHeure }}</strong></div>
+              <div>🍽️ <strong>{{ recapRepas }}</strong></div>
+            </div>
+
+            <p style="font-size:0.98rem; line-height:1.7; margin:0 0 6px;">J'ai hâte d'être avec toi. Merci d'avoir dit oui — même si je savais que tu allais craquer. 💕</p>
+            <p style="font-style:italic; font-size:0.88rem; color:#6b4a58; margin:0 0 28px;">P.S. : le bouton "non" te dit merci de ne jamais l'avoir attrapé.</p>
+
+            <button onClick="{{ sendReponse }}" style="border:none; border-radius:30px; padding:16px 32px; font-family:'Poppins', sans-serif; font-weight:600; font-size:1rem; background:#e8447c; color:#fffafc; cursor:pointer; box-shadow:0 8px 20px rgba(232,68,124,0.35);">Envoyer ma réponse</button>
+          </div>
+        </sc-if>
+        <sc-if value="{{ hasSent }}" hint-placeholder-val="{{ false }}">
+          <div>
+            <div style="width:64px; height:64px; margin:0 auto 20px; border-radius:50%; background:#f6a8c2; display:flex; align-items:center; justify-content:center; font-size:30px;">✨</div>
+            <h1 style="font-family:'Cormorant Garamond', serif; font-weight:700; font-size:1.8rem; line-height:1.25; margin:0 0 12px; color:#e8447c;">C'est envoyé !</h1>
+            <p style="font-size:0.98rem; line-height:1.7; margin:0;">À très vite, Diane. 🌸</p>
+          </div>
+        </sc-if>
+      </div>
+    </sc-if>
+
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = {
+    step: 1,
+    date: '',
+    heure: '',
+    repas: null,
+    sent: false,
+    nonFled: false,
+    nonPos: { top: 0, left: 0 },
+    reducedMotion: false
+  };
+
+  componentDidMount() {
+    try {
+      const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+      this.setState({ reducedMotion: !!mq.matches });
+    } catch (e) {}
+  }
+
+  goToStep2 = () => this.setState({ step: 2 });
+  goToStep3 = () => this.setState({ step: 3 });
+  goToStep4 = () => this.setState({ step: 4 });
+  goToStep5 = () => this.setState({ step: 5 });
+
+  onDateChange = (e) => this.setState({ date: e.target.value });
+  onHeureChange = (e) => this.setState({ heure: e.target.value });
+
+  selectRepas = (name) => this.setState({ repas: name });
+
+  fleeNon = () => {
+    if (this.state.reducedMotion) return;
+    const margin = 24;
+    const btnW = 130, btnH = 56;
+    const maxLeft = Math.max(margin, window.innerWidth - btnW - margin);
+    const maxTop = Math.max(margin, window.innerHeight - btnH - margin);
+    const left = margin + Math.random() * (maxLeft - margin);
+    const top = margin + Math.random() * (maxTop - margin);
+    this.setState({ nonFled: true, nonPos: { top, left } });
+  };
+
+  sendReponse = () => this.setState({ sent: true });
+
+  renderVals() {
+    const s = this.state;
+    const heureOptions = [
+      '12:30 — déjeuner',
+      '16:00 — café',
+      '19:30 — dîner',
+      '21:30 — soirée'
+    ];
+    const mealsBase = [
+      { name: 'Pizza', emoji: '🍕' },
+      { name: 'Sushi', emoji: '🍣' },
+      { name: 'Burgers', emoji: '🍔' },
+      { name: 'Pâtes', emoji: '🍝' },
+      { name: 'Tacos', emoji: '🌮' },
+      { name: 'Ramen', emoji: '🍜' }
+    ];
+    const meals = mealsBase.map((m) => {
+      const selected = s.repas === m.name;
+      return {
+        name: m.name,
+        emoji: m.emoji,
+        onSelect: () => this.selectRepas(m.name),
+        cardStyle: {
+          border: selected ? '2px solid #e8447c' : '2px solid #f6a8c2',
+          borderRadius: '16px',
+          background: selected ? '#ffeef4' : '#ffffff',
+          padding: '16px 8px',
+          fontFamily: 'Poppins, sans-serif',
+          cursor: 'pointer',
+          textAlign: 'center',
+          color: '#3a2530',
+          transform: selected ? 'translateY(-3px)' : 'translateY(0)',
+          boxShadow: selected ? '0 8px 18px rgba(232,68,124,0.25)' : 'none',
+          transition: 'all 0.15s ease'
+        }
+      };
+    });
+
+    const nonButtonStyle = s.nonFled
+      ? {
+          position: 'fixed',
+          top: s.nonPos.top + 'px',
+          left: s.nonPos.left + 'px',
+          border: 'none',
+          borderRadius: '30px',
+          padding: '16px 32px',
+          fontFamily: 'Poppins, sans-serif',
+          fontWeight: 600,
+          fontSize: '1rem',
+          background: '#c98bd0',
+          color: '#fffafc',
+          cursor: 'pointer',
+          zIndex: 50,
+          transition: 'top 0.25s ease, left 0.25s ease',
+          boxShadow: '0 8px 20px rgba(201,139,208,0.4)'
+        }
+      : {
+          position: 'relative',
+          border: 'none',
+          borderRadius: '30px',
+          padding: '16px 32px',
+          fontFamily: 'Poppins, sans-serif',
+          fontWeight: 600,
+          fontSize: '1rem',
+          background: '#c98bd0',
+          color: '#fffafc',
+          cursor: 'pointer'
+        };
+
+    const months = ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
+    const days = ['dimanche','lundi','mardi','mercredi','jeudi','vendredi','samedi'];
+    let recapDate = 'une date à définir';
+    if (s.date) {
+      const d = new Date(s.date + 'T00:00:00');
+      if (!isNaN(d.getTime())) {
+        recapDate = days[d.getDay()] + ' ' + d.getDate() + ' ' + months[d.getMonth()];
+      }
+    }
+
+    return {
+      isStep1: s.step === 1,
+      isStep2: s.step === 2,
+      isStep3: s.step === 3,
+      isStep4: s.step === 4,
+      isStep5: s.step === 5,
+      notSent: !s.sent,
+      hasSent: s.sent,
+      goToStep2: this.goToStep2,
+      goToStep3: this.goToStep3,
+      goToStep4: this.goToStep4,
+      goToStep5: this.goToStep5,
+      onDateChange: this.onDateChange,
+      onHeureChange: this.onHeureChange,
+      dateValue: s.date,
+      heureValue: s.heure,
+      heureOptions: heureOptions,
+      meals: meals,
+      nonDisabled: s.reducedMotion,
+      nonEnabled: !s.reducedMotion,
+      fleeNon: this.fleeNon,
+      nonButtonStyle: nonButtonStyle,
+      sendReponse: this.sendReponse,
+      recapDate: recapDate,
+      recapHeure: s.heure || 'une heure à définir',
+      recapRepas: s.repas || 'une surprise'
+    };
+  }
+}
+
+</script>
+</body>
+</html>
